@@ -20,6 +20,10 @@
       {
         "command": "iarasort.vcpkg_sort",
         "title": "Iara: Sort vcpkg.json file by package names"
+      },
+      {
+        "command": "iarasort.replace_path",
+        "title": "Iara: Replace backslashes with forward slashes"
       }
     ]
   },
