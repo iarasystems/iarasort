@@ -2,7 +2,7 @@
   "name": "iarasort",
   "displayName": "iarasort",
   "description": "",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "engines": {
     "vscode": "^1.99.0"
   },
@@ -22,7 +22,7 @@
         "title": "Iara: Sort vcpkg.json file by package names"
       },
       {
-        "command": "iarasort.replace_path",
+        "command": "iarasort.replace_backslashes",
         "title": "Iara: Replace backslashes with forward slashes"
       }
     ]
