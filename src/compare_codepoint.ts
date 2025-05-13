@@ -6,11 +6,21 @@
  * @param b The second string.
  * @returns -1 if a < b, 1 if a > b, 0 if a === b according to code point order.
  */
-export function compareByCodePoint(a: string, b: string): number {
+export function compareByCodePoint(
+  a: string,
+  b: string,
+  caseInsensitive: boolean = false
+): number {
+  if (caseInsensitive) {
+    a = a.toLocaleUpperCase();
+    b = b.toLocaleUpperCase();
+  }
+
   const len = Math.min(a.length, b.length);
 
   for (let i = 0; i < len; i++) {
-    // Use codePointAt for robustness with characters outside BMP
+    // Use codePointAt for robustness with characters outside BMP (Basic
+    // Multilingual Plane).
     const codePointA = a.codePointAt(i);
     const codePointB = b.codePointAt(i);
 

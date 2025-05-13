@@ -6,7 +6,14 @@ import { ReplaceBackSlashesWithForwardSlashes } from "./replace_backslashes";
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
-    vscode.commands.registerCommand("iarasort.sort", sortAscii)
+    vscode.commands.registerCommand("iarasort.sort", () => {
+      sortAscii(false);
+    })
+  );
+  context.subscriptions.push(
+    vscode.commands.registerCommand("iarasort.sort_case_insensitive", () => {
+      sortAscii(true);
+    })
   );
   context.subscriptions.push(
     vscode.commands.registerCommand("iarasort.vcpkg_sort", sortActiveVcpkgFile)

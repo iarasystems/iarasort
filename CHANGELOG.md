@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.0] - 2025-05-13
+
+- Added command `Sort Selected Lines (ASCII) (case insensitive)` which sorts the
+  lines disregarding the character case.
+
 ## [0.2.0] - 2025-05-11
 
 ### Added
@@ -9,7 +14,6 @@ All notable changes to this project will be documented in this file.
 - Added command `Replace Backslashes with Forward Slashes` which converts
   backslashes (`\`) to forward slashes (`/`) within the currently selected text.
   Supports multiple selections.
-
 
 ## [0.1.0] - 2025-05-08
 

@@ -1,7 +1,31 @@
 import * as vscode from "vscode";
 import { compareByCodePoint } from "./compare_codepoint";
 
-function sortSelectedLines(editor: vscode.TextEditor) {
+function sortEditor(
+  editor: vscode.TextEditor,
+  startLine: number,
+  endLine: number,
+  linesToSort: string[],
+  caseInsensitive: boolean
+) {
+  const startPosition = new vscode.Position(startLine, 0);
+  const endPosition = editor.document.lineAt(endLine).range.end;
+  const rangeToSort = new vscode.Range(startPosition, endPosition);
+  const sortedText = linesToSort
+    .sort((a, b) => {
+      return compareByCodePoint(a, b, caseInsensitive);
+    })
+    .join("\n");
+
+  editor.edit((editBuilder) => {
+    editBuilder.replace(rangeToSort, sortedText);
+  });
+}
+
+function sortSelectedLines(
+  editor: vscode.TextEditor,
+  caseInsensitive: boolean
+) {
   const startLine = editor.selection.start.line;
   const endLine = editor.selection.end.line;
 
@@ -17,20 +41,13 @@ function sortSelectedLines(editor: vscode.TextEditor) {
     return;
   }
 
-  const startPosition = new vscode.Position(startLine, 0);
-  const endPosition = editor.document.lineAt(endLine).range.end;
-  const rangeToSort = new vscode.Range(startPosition, endPosition);
-  const sortedText = linesToSort.sort(compareByCodePoint).join("\n");
-
-  editor.edit((editBuilder) => {
-    editBuilder.replace(rangeToSort, sortedText);
-  });
+  sortEditor(editor, startLine, endLine, linesToSort, caseInsensitive);
 }
 
-export function sortAscii(...args: any[]): any {
+export function sortAscii(caseInsensitive: boolean): any {
   const editor = vscode.window.activeTextEditor;
   if (editor) {
-    sortSelectedLines(editor);
+    sortSelectedLines(editor, caseInsensitive);
   } else {
     vscode.window.showInformationMessage("No active text editor.");
   }

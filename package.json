@@ -2,9 +2,9 @@
   "name": "iarasort",
   "displayName": "iarasort",
   "description": "",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "engines": {
-    "vscode": "^1.99.0"
+    "vscode": "^1.70.0"
   },
   "categories": [
     "Other"
@@ -16,6 +16,10 @@
       {
         "command": "iarasort.sort",
         "title": "Iara: Sort lines (ASCII order)"
+      },
+      {
+        "command": "iarasort.sort_case_insensitive",
+        "title": "Iara: Sort lines (ASCII order, case insensitive)"
       },
       {
         "command": "iarasort.vcpkg_sort",
@@ -36,7 +40,7 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.99.0",
+    "@types/vscode": "^1.70.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "20.x",
     "@typescript-eslint/eslint-plugin": "^8.31.1",
