@@ -1,5 +1,34 @@
 import * as vscode from "vscode";
 
+function getFullLinesRange(
+  document: vscode.TextDocument,
+  selection: vscode.Selection
+): vscode.Range {
+  const startPosition = new vscode.Position(selection.start.line, 0);
+  const endPosition = document.lineAt(selection.end.line).range.end;
+  return new vscode.Range(startPosition, endPosition);
+}
+
+function convertBackslashesToForwardSlashes(text: string): string {
+  return text.replace(/\\/g, "/");
+}
+
+function applyReplacementToSelection(
+  document: vscode.TextDocument,
+  editBuilder: vscode.TextEditorEdit,
+  selection: vscode.Selection
+): boolean {
+  const range = getFullLinesRange(document, selection);
+  const originalText = document.getText(range);
+  const transformedText = convertBackslashesToForwardSlashes(originalText);
+
+  if (originalText !== transformedText) {
+    editBuilder.replace(range, transformedText);
+    return true;
+  }
+  return false;
+}
+
 export async function ReplaceBackSlashesWithForwardSlashes(): Promise<void> {
   const editor = vscode.window.activeTextEditor;
 
@@ -8,11 +37,8 @@ export async function ReplaceBackSlashesWithForwardSlashes(): Promise<void> {
     return;
   }
 
-  const document = editor.document;
-  // Get all selections (supports multi-cursor).
   const selections = editor.selections;
 
-  // Check if there's any actual selection.
   if (selections.length === 0 || selections.every((s) => s.isEmpty)) {
     vscode.window.showInformationMessage(
       "No text selected. Please select the path(s) to convert."
@@ -20,32 +46,13 @@ export async function ReplaceBackSlashesWithForwardSlashes(): Promise<void> {
     return;
   }
 
-  // Perform the edit operation.
-  await editor
-    .edit((editBuilder) => {
-      selections.forEach((selection) => {
-        replaceSelectionForwardSlashByBackSlash(selection, editBuilder);
-      });
-    })
-    .then((success) => {
-      if (!success) {
-        vscode.window.showErrorMessage(
-          "Error: Could not apply path conversion."
-        );
-      }
+  const success = await editor.edit((editBuilder) => {
+    selections.forEach((selection) => {
+      applyReplacementToSelection(editor.document, editBuilder, selection);
     });
+  });
 
-  function replaceSelectionForwardSlashByBackSlash(
-    selection: vscode.Selection,
-    editBuilder: vscode.TextEditorEdit
-  ): void {
-    for (let i = selection.start.line; i <= selection.end.line; i++) {
-      const line = document.lineAt(i); // Get the TextLine object
-      const originalLineText = line.text; // Get the full text of the line
-      const newLineText = originalLineText.replace(/\\/g, "/");
-      if (originalLineText !== newLineText) {
-        editBuilder.replace(line.range, newLineText);
-      }
-    }
+  if (!success) {
+    vscode.window.showErrorMessage("Error: Could not apply path conversion.");
   }
 }

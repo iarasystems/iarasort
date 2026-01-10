@@ -185,4 +185,27 @@ suite("compareByCodePoint Function Tests", () => {
     assert.strictEqual(compareByCodePoint("!@#", "!@#", true), 0);
     assert.strictEqual(compareByCodePoint("abc!", "ABC@", true), -1); // '!' < '@'
   });
+
+  suite("Stable Sorting Tests", () => {
+    test("should preserve order for case-insensitive duplicates (stable sort)", () => {
+      const input = ["apple", "Apple", "Banana"];
+      const expected = ["apple", "Apple", "Banana"];
+      const result = [...input].sort((a, b) => compareByCodePoint(a, b, true));
+      assert.deepStrictEqual(result, expected);
+    });
+
+    test("should preserve order for case-insensitive duplicates (reversed input)", () => {
+      const input = ["Apple", "apple", "Banana"];
+      const expected = ["Apple", "apple", "Banana"];
+      const result = [...input].sort((a, b) => compareByCodePoint(a, b, true));
+      assert.deepStrictEqual(result, expected);
+    });
+
+    test("should sort different words case-insensitively", () => {
+      const input = ["Banana", "apple"];
+      const expected = ["apple", "Banana"];
+      const result = [...input].sort((a, b) => compareByCodePoint(a, b, true));
+      assert.deepStrictEqual(result, expected);
+    });
+  });
 });

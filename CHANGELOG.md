@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.1] - 2026-01-10
+
+- Support multiple independent selections in all sorting commands.
+- Case-insensitive sort is now stable (preserves order for case-variant duplicates like "apple" and "Apple").
+- Partial line selections now automatically expand to full lines.
+- Improved command reliability and async handling.
+
 ## [0.3.0] - 2025-05-13
 
 - Added command `Sort Selected Lines (ASCII) (case insensitive)` which sorts the
